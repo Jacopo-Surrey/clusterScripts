@@ -13,7 +13,7 @@
 
 ## parameters to be costumised:
 runName=geant4	## any name to give to the current run
-buildPath=../../../build/new	## path to executable build directory
+buildPath=/users/jm01955/simulations/build	## path to executable build directory
 executableName=myProgram	## name of the G4 executable
 mainMacroName=run	## name of the main macro to be run (w/o .mac)
 detectorMacroName=detector ## detector properties macro
