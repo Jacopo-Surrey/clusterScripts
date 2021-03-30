@@ -17,6 +17,7 @@ do
 			
 			directoryName=wide$detectorWidthUM.thick$detectorThicknessUM.deep$detectorDepthMM
 			
+			mkdir $directoryName			
 			cd $directoryName
 			
 			logFile=simulation.log
@@ -37,7 +38,9 @@ do
 			
 			echo launching slurm script... >> $logFile
 			../slurm.sh >> $logFile
-		
+			
+			cd ..
+			
 		done
 	done
 done
