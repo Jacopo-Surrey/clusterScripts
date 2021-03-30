@@ -37,7 +37,8 @@ do
 			echo depth in water $detectorDepthMM mm >> $logFile
 			
 			echo launching slurm script... >> $logFile
-			../slurm.sh >> $logFile
+			cp ../slurm.sh .
+			sbatch slurm.sh >> $logFile
 			
 			cd ..
 			
