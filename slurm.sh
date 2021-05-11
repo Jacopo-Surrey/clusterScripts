@@ -17,6 +17,7 @@ buildPath=/users/jm01955/simulations/build	## path to executable build directory
 executableName=myProgram	## name of the G4 executable
 mainMacroName=run	## name of the main macro to be run (w/o .mac)
 detectorMacroName=detector ## detector properties macro
+gpsMacroName=gps_beam ## general particle source macro
 outputExtension=csv	## usually either csv or root
 
 ## ---------------------------------------
@@ -35,12 +36,14 @@ sed -i "s|#/random/setSeeds 1 1|/random/setSeeds $SLURM_ARRAY_JOB_ID $SLURM_ARRA
 
 ## modify the commands in the detector macro
 ## the following paramenters MUST be set in the PARENT script (main.sh):
-## detectorWidthUM , detectorThicknessUM , detectorDepthMM
+## detectorWidthUM , detectorThicknessUM , detectorDepthMM, beamEnergyMEV
 
 sed -i "s|/geometrySetup/detectorDimension/setWidth 100 um|/geometrySetup/detectorDimension/setWidth $detectorWidthUM um|" $detectorMacroName.mac
 sed -i "s|/geometrySetup/detectorDimension/setThickness 8 um|/geometrySetup/detectorDimension/setThickness $detectorThicknessUM um|" $detectorMacroName.mac
 
 sed -i "s|/geometrySetup/detectorPosition/setDepth 10 mm|/geometrySetup/detectorPosition/setDepth $detectorDepthMM mm|" $detectorMacroName.mac
+
+sed -i "s|/gps/ene/mono 150.0 MeV|/gps/ene/mono $beamEnergyMEV MeV|" $gpsMacroName.mac
 
 echo using seeds: $SLURM_ARRAY_JOB_ID $SLURM_ARRAY_TASK_ID
 
