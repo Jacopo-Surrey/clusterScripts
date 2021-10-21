@@ -46,16 +46,17 @@ sed -i "s|/geometrySetup/detectorPosition/setDepth 10 mm|/geometrySetup/detector
 sed -i "s|/gps/ene/mono 150.0 MeV|/gps/ene/mono $beamEnergyMEV MeV|" $gpsMacroName.mac
 
 # use a Python script guess how many particles should be shot for a given number of desired counts
-module load Python
+##module load Python # not needed if loaded in main.sh
 aimCountNo=5000
-primaryNo=$(python3 $detectorDepthMM $beamEnergyMEV $aimCountNo)
+primaryNo=$(python3 ../predictRate.py $detectorDepthMM $beamEnergyMEV $aimCountNo)
 
 sed -i "s|/run/beamOn 100000|/run/beamOn $primaryNo|" $mainMacroName.mac
 
 echo using seeds: $SLURM_ARRAY_JOB_ID $SLURM_ARRAY_TASK_ID
+echo shooting $primaryNo primaries
 
 ## run the program
-module load geant4
+##module load geant4 # not needed if loaded in main.sh
 ./$executableName $mainMacroName.mac
 
 ## OPTIONAL

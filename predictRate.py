@@ -19,6 +19,11 @@ ratio = A /pow(depthMM, 3) + B
 
 required = target / ratio
 
+if required < 0 :
+	required = -required
+	if required > 500000 :
+		required = 500000
+
 if normal :
 	print( int(required) )
 
