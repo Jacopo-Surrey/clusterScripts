@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --partition=shared
-#SBATCH --time=02-02:00
+#SBATCH --time=10-00:00
 
-#SBATCH --job-name="geant4"
+##SBATCH --job-name="geant4"
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1000
 #SBATCH --array=0-50
@@ -44,6 +44,13 @@ sed -i "s|/geometrySetup/detectorDimension/setThickness 8 um|/geometrySetup/dete
 sed -i "s|/geometrySetup/detectorPosition/setDepth 10 mm|/geometrySetup/detectorPosition/setDepth $detectorDepthMM mm|" $detectorMacroName.mac
 
 sed -i "s|/gps/ene/mono 150.0 MeV|/gps/ene/mono $beamEnergyMEV MeV|" $gpsMacroName.mac
+
+# use a Python script guess how many particles should be shot for a given number of desired counts
+module load Python
+aimCountNo=5000
+primaryNo=$(python3 $detectorDepthMM $beamEnergyMEV $aimCountNo)
+
+sed -i "s|/run/beamOn 100000|/run/beamOn $primaryNo|" $mainMacroName.mac
 
 echo using seeds: $SLURM_ARRAY_JOB_ID $SLURM_ARRAY_TASK_ID
 

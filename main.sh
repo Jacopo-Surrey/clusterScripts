@@ -8,15 +8,17 @@
 ## creates a folder for each set of parameters, and executes slurm.sh from there
 ## << IMPORTANT >> make sure that if you set a relative path for $buildPath in slurm.sh, such path accounts for this folder
 
+module load Python
+module load geant4
+
 for detectorWidthUM in 300
 do
 	for detectorThicknessUM in 1 5 25 100
 	do
-		for detectorDepthMM in 10 80 170 200 250
+		for beamEnergyMEV in 58 150 250
 		do
-			for beamEnergyMEV in 0.5 10 30 75
+			for detectorDepthMM in $(python3 getDepthForEnergy.py $beamEnergyMEV)
 			do
-				
 				directoryName=wide$detectorWidthUM.thick$detectorThicknessUM.deep$detectorDepthMM.ene$beamEnergyMEV
 				
 				mkdir $directoryName			
@@ -41,9 +43,10 @@ do
 				export beamEnergyMEV
 				echo beam energy $beamEnergyMEV MeV >> $logFile
 				
+				jobName=g4.$detectorWidthUM.$detectorThicknessUM.$detectorDepthMM.$beamEnergyMEV
 				echo launching slurm script... >> $logFile
 				cp ../slurm.sh .
-				sbatch slurm.sh >> $logFile
+				sbatch --job-name="$jobName" slurm.sh >> $logFile
 				
 				cd ..
 				
