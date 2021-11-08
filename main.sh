@@ -44,8 +44,8 @@ do
 				echo beam energy $beamEnergyMEV MeV >> $logFile
 				
 				jobName=g4.$detectorWidthUM.$detectorThicknessUM.$detectorDepthMM.$beamEnergyMEV
+				cp ../*.sh ../*.py ../*.csv .
 				echo launching slurm script... >> $logFile
-				cp ../slurm.sh ../*.py ../*.csv .
 				sbatch --job-name="$jobName" slurm.sh >> $logFile
 				
 				cd ..

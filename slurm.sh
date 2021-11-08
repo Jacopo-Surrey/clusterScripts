@@ -47,8 +47,8 @@ sed -i "s|/gps/ene/mono 150.0 MeV|/gps/ene/mono $beamEnergyMEV MeV|" $gpsMacroNa
 
 # use a Python script guess how many particles should be shot for a given number of desired counts
 ##module load Python # not needed if loaded in main.sh
-aimCountNo=5000
-primaryNo=$(python3 ../predictRate.py $detectorDepthMM $beamEnergyMEV $aimCountNo)
+aimCountNo=50000
+primaryNo=$(./predictRate.sh $detectorDepthMM $beamEnergyMEV $aimCountNo)
 
 sed -i "s|/run/beamOn 100000|/run/beamOn $primaryNo|" $mainMacroName.mac
 
