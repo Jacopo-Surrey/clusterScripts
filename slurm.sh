@@ -34,6 +34,8 @@ cd $folderName
 ## modify the seed to be different for each run/task
 sed -i "s|#/random/setSeeds 1 1|/random/setSeeds $SLURM_ARRAY_JOB_ID $SLURM_ARRAY_TASK_ID|" $mainMacroName.mac
 
+echo using seeds: $SLURM_ARRAY_JOB_ID $SLURM_ARRAY_TASK_ID
+
 ## modify the commands in the detector macro
 ## the following paramenters MUST be set in the PARENT script (main.sh):
 ## detectorWidthUM , detectorThicknessUM , detectorDepthMM, beamEnergyMEV
@@ -44,16 +46,6 @@ sed -i "s|/geometrySetup/detectorDimension/setThickness 8 um|/geometrySetup/dete
 sed -i "s|/geometrySetup/detectorPosition/setDepth 10 mm|/geometrySetup/detectorPosition/setDepth $detectorDepthMM mm|" $detectorMacroName.mac
 
 sed -i "s|/gps/ene/mono 150.0 MeV|/gps/ene/mono $beamEnergyMEV MeV|" $gpsMacroName.mac
-
-# use a Python script guess how many particles should be shot for a given number of desired counts
-##module load Python # not needed if loaded in main.sh
-aimCountNo=50000
-primaryNo=$(python3 ../predictRate.py $detectorDepthMM $beamEnergyMEV $aimCountNo)
-
-sed -i "s|/run/beamOn 100000|/run/beamOn $primaryNo|" $mainMacroName.mac
-
-echo using seeds: $SLURM_ARRAY_JOB_ID $SLURM_ARRAY_TASK_ID
-echo shooting $primaryNo primaries
 
 ## run the program
 ##module load geant4 # not needed if loaded in main.sh
