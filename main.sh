@@ -19,37 +19,42 @@ do
 		do
 			for detectorDepthMM in $(python3 getDepthForEnergy.py $beamEnergyMEV)
 			do
-				directoryName=wide$detectorWidthUM.thick$detectorThicknessUM.deep$detectorDepthMM.ene$beamEnergyMEV
-				
-				mkdir $directoryName			
-				cd $directoryName
-				
-				logFile=simulation.log
-				
-				pwd >> $logFile
-				date >> $logFile
-				
-				echo MicroDiamond detector in water phantom >> $logFile
-				
-				export detectorWidthUM
-				echo detector width $detectorWidthUM um >> $logFile
-				
-				export detectorThicknessUM
-				echo detector thickness $detectorThicknessUM um >> $logFile
-				
-				export detectorDepthMM
-				echo depth in water $detectorDepthMM mm >> $logFile
-				
-				export beamEnergyMEV
-				echo beam energy $beamEnergyMEV MeV >> $logFile
-				
-				jobName=g4.$detectorWidthUM.$detectorThicknessUM.$detectorDepthMM.$beamEnergyMEV
-				cp ../*.sh ../*.py ../*.csv .
-				echo launching slurm script... >> $logFile
-				sbatch --job-name="$jobName" slurm.sh >> $logFile
-				
-				cd ..
-				
+				for rangeCutUM in 1
+				do
+					directoryName=wide$detectorWidthUM.thick$detectorThicknessUM.deep$detectorDepthMM.ene$beamEnergyMEV.cut$rangeCutUM
+					
+					mkdir $directoryName			
+					cd $directoryName
+					
+					logFile=simulation.log
+					
+					pwd >> $logFile
+					date >> $logFile
+					
+					echo MicroDiamond detector in water phantom >> $logFile
+					
+					export detectorWidthUM
+					echo detector width $detectorWidthUM um >> $logFile
+					
+					export detectorThicknessUM
+					echo detector thickness $detectorThicknessUM um >> $logFile
+					
+					export detectorDepthMM
+					echo depth in water $detectorDepthMM mm >> $logFile
+					
+					export beamEnergyMEV
+					echo beam energy $beamEnergyMEV MeV >> $logFile
+					
+					export rangeCutUM
+					echo range cut around SV $rangeCutUM um >> $logFile
+					
+					jobName=g4.$detectorWidthUM.$detectorThicknessUM.$detectorDepthMM.$beamEnergyMEV.$rangeCutUM
+					cp ../*.sh ../*.py ../*.csv .
+					echo launching slurm script... >> $logFile
+					sbatch --job-name="$jobName" slurm.sh >> $logFile
+					
+					cd ..
+				done
 			done
 		done
 	done
