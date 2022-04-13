@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #SBATCH --partition=shared
-#SBATCH --time=10-00:00
+#SBATCH --time=7-00:00
 
 ##SBATCH --job-name="geant4"
 #SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=1000
+#SBATCH --mem-per-cpu=4000
 #SBATCH --array=0-4
 #SBATCH --output=%x_%a_std.out
 
