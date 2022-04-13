@@ -13,7 +13,7 @@
 
 ## parameters to be costumised:
 runName=geant4	## any name to give to the current run
-buildPath=/users/jm01955/simulations/build	## path to executable build directory
+buildPath=/users/jm01955/simulations/build_rotation	## path to executable build directory
 executableName=myProgram	## name of the G4 executable
 mainMacroName=run	## name of the main macro to be run (w/o .mac)
 detectorMacroName=detector ## detector properties macro
@@ -49,6 +49,8 @@ sed -i "s|/geometrySetup/detectorPosition/setDepth 10 mm|/geometrySetup/detector
 sed -i "s|/gps/ene/mono 150.0 MeV|/gps/ene/mono $beamEnergyMEV MeV|" $gpsMacroName.mac
 
 sed -i "s|/cuts/custom/setCutsAroundSV 1 um|/cuts/custom/setCutsAroundSV $rangeCutUM um|" $physicsMacroName.mac
+
+sed -i "s|/geometrySetup/detectorPosition/setMicroDiamondAngle 0 deg|/geometrySetup/detectorPosition/setMicroDiamondAngle $detectorAngleDEG deg|" $detectorMacroName.mac
 
 ## run the program
 ##module load geant4 # not needed if loaded in main.sh
